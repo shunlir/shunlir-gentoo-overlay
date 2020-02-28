@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+  <maintainer type="person">
+    <email>XXXXXX@163.com</email>
+    <name>shunlir</name>
+  </maintainer>
+  <longdescription lang="en">
+    Visual Studio Code is a lightweight but powerful source code editor
+    which runs on your desktop and is available for Windows, macOS and Linux.
+  </longdescription>
+  <upstream>
+    <doc>https://code.visualstudio.com/docs</doc>
+  </upstream>
+</pkgmetadata>

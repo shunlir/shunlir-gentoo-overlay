@@ -1,0 +1,43 @@
+diff --git a/server/inputs-channel.c b/server/inputs-channel.c
+index f24d18d..721c041 100644
+--- a/server/inputs-channel.c
++++ b/server/inputs-channel.c
+@@ -317,6 +317,7 @@ static bool inputs_channel_handle_message(RedChannelClient *rcc, uint16_t type,
+         SpiceMsgcMouseMotion *mouse_motion = message;
+ 
+         inputs_channel_client_on_mouse_motion(icc);
++        spice_debug("mouse_motion, mouse %p, mouse_mode %d", mouse, reds_get_mouse_mode(reds));
+         if (mouse && reds_get_mouse_mode(reds) == SPICE_MOUSE_MODE_SERVER) {
+             SpiceMouseInterface *sif;
+             sif = SPICE_UPCAST(SpiceMouseInterface, mouse->base.sif);
+@@ -331,6 +332,8 @@ static bool inputs_channel_handle_message(RedChannelClient *rcc, uint16_t type,
+         SpiceTabletInstance *tablet = inputs_channel_get_tablet(inputs_channel);
+ 
+         inputs_channel_client_on_mouse_motion(icc);
++        spice_debug("mouse_position, tablet %p, mouse_mode %d, config_agent_mouse %d, has_vdagent %d", tablet, reds_get_mouse_mode(reds),
++	            reds_config_get_agent_mouse(reds), reds_has_vdagent(reds));
+         if (reds_get_mouse_mode(reds) != SPICE_MOUSE_MODE_CLIENT) {
+             break;
+         }
+diff --git a/server/reds.c b/server/reds.c
+index 8dd0abd..f2dddb8 100644
+--- a/server/reds.c
++++ b/server/reds.c
+@@ -664,6 +664,7 @@ static void reds_set_mouse_mode(RedsState *reds, SpiceMouseMode mode)
+         return;
+     }
+     reds->mouse_mode = mode;
++    spice_debug("mouse_mode: %d", (int)mode);
+ 
+     FOREACH_QXL_INSTANCE(reds, qxl) {
+         red_qxl_set_mouse_mode(qxl, mode);
+@@ -4502,6 +4503,9 @@ void reds_update_client_mouse_allowed(RedsState *reds)
+         }
+     }
+ 
++    spice_debug("num_active_workers %d, x_res %d, y_res %d, allow_now %d, dispatcher_allows_client_mouse %d",
++                num_active_workers, x_res, y_res, allow_now, reds->dispatcher_allows_client_mouse);
++
+     if (allow_now || allow_now != reds->dispatcher_allows_client_mouse) {
+         reds->monitor_mode.x_res = x_res;
+         reds->monitor_mode.y_res = y_res;

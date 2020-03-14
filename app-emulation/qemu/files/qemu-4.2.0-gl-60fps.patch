@@ -1,0 +1,21 @@
+diff --git a/ui/console.c b/ui/console.c
+index 82d1ddac..6f14732f 100644
+--- a/ui/console.c
++++ b/ui/console.c
+@@ -33,6 +33,7 @@
+ #include "chardev/char-fe.h"
+ #include "trace.h"
+ #include "exec/memory.h"
++#include "sysemu/sysemu.h"
+ 
+ #define DEFAULT_BACKSCROLL 512
+ #define CONSOLE_CURSOR_PERIOD 500
+@@ -208,7 +209,7 @@ static void gui_update(void *opaque)
+ 
+     QLIST_FOREACH(dcl, &ds->listeners, next) {
+         dcl_interval = dcl->update_interval ?
+-            dcl->update_interval : GUI_REFRESH_INTERVAL_DEFAULT;
++            dcl->update_interval : (display_opengl ? 17 : GUI_REFRESH_INTERVAL_DEFAULT);
+         if (interval > dcl_interval) {
+             interval = dcl_interval;
+         }
